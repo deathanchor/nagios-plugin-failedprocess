@@ -16,7 +16,7 @@ USAGE="
     -m <MMIN> = only look at files that are this old (-10 = <10 min old, default $MMIN)
 "
 
-while getopts ':c:w:s:f:i' opt; do
+while getopts ':c:w:m:f:' opt; do
     case $opt in
         c)
             CRITICAL=$OPTARG

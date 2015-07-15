@@ -9,8 +9,8 @@
 STARTED=`date`
 DEFDIR=/opt/log/failalert
 DEFFILE=$(basename $0)
-set ${ALERTDIR:=$DEFDIR}
-set ${ALERTFILE:=$DEFFILE}
+true ${ALERTDIR:=$DEFDIR}
+true ${ALERTFILE:=$DEFFILE}
 
 HASERRORS=0
 STARTDIR=`pwd`
@@ -29,7 +29,6 @@ function failedproc(){
 
 function successproc(){
     # removed only if successful
-    echo ERRORS: $HASERRORS
     if [[ $HASERRORS == 0 ]]; then
         rm -f $ALERTDIR/$ALERTFILE
     fi
