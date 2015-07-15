@@ -7,7 +7,7 @@ Tools for making failed bash jobs easily alerting via nagios
 ## Authors
 
 ### Main Author
- Nikola Jnaceski (@deathanchor)
+ Nikola Janceski (@deathanchor)
 
 ## Installation
 
@@ -45,5 +45,6 @@ false; # triggers an alert
 </code></pre>
 
 Every fail run adds a line to $ALERTFILE in the $ALERTDIR.
+
 Every successful run removes the ALERTFILE in the $ALERTDIR.
 
