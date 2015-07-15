@@ -46,5 +46,5 @@ false; # triggers an alert
 
 Every fail run adds a line to $ALERTFILE in the $ALERTDIR.
 
-Every successful run removes the ALERTFILE in the $ALERTDIR.
+Every successful run removes the $ALERTFILE in the $ALERTDIR.
 
