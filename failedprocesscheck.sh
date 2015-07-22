@@ -9,14 +9,16 @@ CRITICAL=1 # critical if it has this or more failure occurances
 FAILUREDIR='/opt/log/failalert' # directory containing failure files should usually be empty
 
 USAGE="
-    usage: $0 [-c <CRITICAL>] [-w <WARNING>] [-f <FAILUREDIR>] [-m <MMIN>]
+    usage: $0 [-c <CRITICAL>] [-w <WARNING>] [-f <FAILUREDIR>] [-m <MMIN>] [-i]
     this will search files in the FAILUREDIR for files older than MMIN minutes
     Critical ($CRITICAL) or Warning ($WARNING) if that many or more failures occurred in the files.
     -f <FAILUREDIR> = directory containing alert file ($FAILUREDIR)
     -m <MMIN> = only look at files that are this old (-10 = <10 min old, default $MMIN)
+    -i = ignore if FAILUREDIR is missing (will return OK instead of UNKNOWN)
 "
 
-while getopts ':c:w:m:f:' opt; do
+IGNOREMISSINGDIR=0
+while getopts ':c:w:m:f:i' opt; do
     case $opt in
         c)
             CRITICAL=$OPTARG
@@ -30,6 +32,9 @@ while getopts ':c:w:m:f:' opt; do
         f)
             FAILUREDIR=$OPTARG
             ;;
+        i)
+            IGNOREMISSINGDIR=1
+            ;;
         \?)
             echo "UNKNOWN OPTION"
             echo "$USAGE"
@@ -42,6 +47,10 @@ shift $((OPTIND-1))  #This tells getopts to move on to the next argument.
 
 # warn if dir is not there/readable/exec, can't be sure that things can write/read from there
 if [[ ! ( -d $FAILUREDIR && -r $FAILUREDIR && -x $FAILUREDIR ) ]]; then
+    if [[ $IGNOREMISSINGDIR == 1 && ! -d $FAILUREDIR ]]; then
+        echo "OK - $FAILUREDIR is missing (ignore on)"
+        exit 0
+    fi
     echo "UNKNOWN - $FAILUREDIR doesn't exist or bad permissions"
     exit 3
 fi
